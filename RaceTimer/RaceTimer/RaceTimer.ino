@@ -2,11 +2,14 @@
 #include <Chrono.h>
 #include <LightChrono.h>
 
-// constants won't change. They're used here to
-// set pin numbers:
 const int laserPin = 2;     // the number of the pushbutton pin
 const int buzzerPin =  3;      // the number of the LED pin
 const int onPin = 4;     // the number of the pushbutton pin
+
+const int returnPin = 5;
+const int prevPin = 6;
+const int nextPin = 7;
+const int setPin = 8;
 
 Chrono chrono(Chrono::MICROS);
 unsigned long measuredTimes[10];
@@ -22,9 +25,15 @@ bool enabled = true;
 void setup() {
   Serial.begin(9600);   // Test
   Serial.println("Stopwatch");
+  
   pinMode(buzzerPin, OUTPUT);
   pinMode(laserPin, INPUT);
   pinMode(onPin, INPUT);
+  
+  pinMode(returnPin, INPUT);
+  pinMode(prevPin, INPUT);
+  pinMode(nextPin, INPUT);
+  pinMode(setPin, INPUT);
   
   measurementTimeout.restart();
 
@@ -75,6 +84,26 @@ void loop() {
   
 }
 
+void settingsMenu() {
+
+  do {
+    Serial.println("Settings");
+
+    Serial.print("Number of Measurements: ");
+    Serial.print(maxMeasurements);
+    Serial.println();
+
+    if (digitalRead(nextPin)) {
+      maxMeasurements++;
+    }
+    if (digitalRead(prevPin)) {
+      maxMeasurements--;
+    }
+    
+  } while (!digitalRead(returnPin));
+
+}
+
 void logAndRestart() {
     if (measurementIndex < maxMeasurements){
       measuredTimes[measurementIndex] = chrono.elapsed();
@@ -85,42 +114,20 @@ void logAndRestart() {
     }
  }
 
-
-// http://forum.arduino.cc/index.php?topic=18588.0
-// argument is time in milliseconds
 void printTime(unsigned long t_milli)
 {
    char buffer[20];
-   int days, hours, mins, secs;
-   int fractime;
-   unsigned long inttime;
+   int mins, secs ;
+   unsigned long millisecs;
 
-   inttime  = t_milli / 1000;
-   fractime = t_milli % 1000;
-   // inttime is the total number of number of seconds
-   // fractimeis the number of thousandths of a second
+   mins = t_milli / (1000*60);
+   millisecs = t_milli - (mins * 1000 * 60);
+   
+   secs = millisecs / 1000;
 
-   // number of days is total number of seconds divided by 24 divided by 3600
-   days     = inttime / (24*3600);
-   inttime  = inttime % (24*3600);
+   millisecs = millisecs - (secs * 1000);
 
-   // Now, inttime is the remainder after subtracting the number of seconds
-   // in the number of days
-   hours    = inttime / 3600;
-   inttime  = inttime % 3600;
-
-   // Now, inttime is the remainder after subtracting the number of seconds
-   // in the number of days and hours
-   mins     = inttime / 60;
-   inttime  = inttime % 60;
-
-   // Now inttime is the number of seconds left after subtracting the number
-   // in the number of days, hours and minutes. In other words, it is the
-   // number of seconds.
-   secs = inttime;
-
-   // Don't bother to print days
-   sprintf(buffer, "%02d:%02d:%02d.%03d", hours, mins, secs, fractime);
+   sprintf(buffer, "%02d:%02d:%03d", mins, secs, millisecs);
    Serial.println(buffer);
    //lcd.print(buffer);
 }
