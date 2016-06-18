@@ -2,6 +2,7 @@
 #include <Chrono.h>
 #include <LightChrono.h>
 
+/* Pin Definitions */
 const int laserPin = 2;     // the number of the pushbutton pin
 const int buzzerPin =  3;      // the number of the LED pin
 const int onPin = 4;     // the number of the pushbutton pin
@@ -10,22 +11,37 @@ const int returnPin = 5;
 const int prevPin = 6;
 const int nextPin = 7;
 const int setPin = 8;
+/* End Pin Definitions*/
 
+/* Variable Definitions */
 Chrono chrono(Chrono::MICROS);
+LightChrono measurementTimeout;
+
 unsigned long measuredTimes[10];
 int measurementIndex = 0;
 int maxMeasurements = 5;
 
-LightChrono measurementTimeout;
-
 int laserState = 0;         // variable for reading the pushbutton status
 int oldLaserState = 0;
 bool enabled = true;
+/* End Variable Definitions */
+
+/* Menu Definitions */
+int menuIndex = 0;
+
+void mainMenu();
+void settingsMenu();
+void chronoView();
+void resultsView();
+
+int (*views[4]) ();
+/* End Menu Definitions */
 
 void setup() {
   Serial.begin(9600);   // Test
   Serial.println("Stopwatch");
   
+  // Pin Modes
   pinMode(buzzerPin, OUTPUT);
   pinMode(laserPin, INPUT);
   pinMode(onPin, INPUT);
@@ -35,9 +51,15 @@ void setup() {
   pinMode(nextPin, INPUT);
   pinMode(setPin, INPUT);
   
+  // Chrono initializations
   measurementTimeout.restart();
-
   chrono.stop();
+  
+  // Menu initializations
+  views[0] = mainMenu;
+  views[1] = settingsMenu;
+  views[2] = chronoView;
+  views[3] = resultsView;
 }
 
 void loop() {
@@ -84,6 +106,22 @@ void loop() {
   
 }
 
+void mainMenu() {
+	Serial.println("RaceTimer");
+	
+	switch(menuIndex){
+		case 0:
+			Serial.println("Start");
+			break;
+		case 1:
+			Serial.println("Settings");
+			break;
+		default:
+			break;
+	}
+	
+}
+
 void settingsMenu() {
 
   do {
@@ -102,6 +140,23 @@ void settingsMenu() {
     
   } while (!digitalRead(returnPin));
 
+}
+
+void chronoView() {
+	Serial.println("Chrono");
+}
+
+void resultsView() {
+	Serial.println("Results");
+}
+
+void checkMenuIndex() {
+	if (digitalRead(nextPin)) {
+		menuIndex++;
+	}
+	if (digitalRead(prevPin)) {
+		menuIndex--;
+	}
 }
 
 void logAndRestart() {
