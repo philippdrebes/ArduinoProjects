@@ -34,7 +34,7 @@ void settingsMenu();
 void chronoView();
 void resultsView();
 
-int (*views[4]) ();
+void (*views[4]) ();
 /* End Menu Definitions */
 
 void setup() {
