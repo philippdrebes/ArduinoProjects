@@ -13,6 +13,13 @@ const int nextPin = 7;
 const int setPin = 8;
 /* End Pin Definitions*/
 
+/* Constants */
+const int mainMenuIndex = 0;
+const int settingsViewIndex = 1;
+const int chronoViewIndex = 2;
+const int resultsViewIndex = 3;
+/* End Constants */
+
 /* Variable Definitions */
 Chrono chrono(Chrono::MICROS);
 LightChrono measurementTimeout;
@@ -27,10 +34,11 @@ bool enabled = true;
 /* End Variable Definitions */
 
 /* Menu Definitions */
-int menuIndex = 0;
+int viewIndex = 0;
+int subviewIndex = 0;
 
 void mainMenu();
-void settingsMenu();
+void settingsView();
 void chronoView();
 void resultsView();
 
@@ -40,76 +48,36 @@ void (*views[4]) ();
 void setup() {
   Serial.begin(9600);   // Test
   Serial.println("Stopwatch");
-  
+
   // Pin Modes
   pinMode(buzzerPin, OUTPUT);
   pinMode(laserPin, INPUT);
   pinMode(onPin, INPUT);
-  
+
   pinMode(returnPin, INPUT);
   pinMode(prevPin, INPUT);
   pinMode(nextPin, INPUT);
   pinMode(setPin, INPUT);
-  
+
   // Chrono initializations
   measurementTimeout.restart();
   chrono.stop();
-  
+
   // Menu initializations
-  views[0] = mainMenu;
-  views[1] = settingsMenu;
-  views[2] = chronoView;
-  views[3] = resultsView;
+  views[mainMenuIndex] = mainMenu;
+  views[settingsViewIndex] = settingsView;
+  views[chronoViewIndex] = chronoView;
+  views[resultsViewIndex] = resultsView;
 }
 
 void loop() {
-  
-  if (measurementTimeout.hasPassed(600)){
-    digitalWrite(buzzerPin, LOW);
-  }
-
-  if (/*digitalRead(onPin) == HIGH &&*/ enabled) { // soll ueberhaupt gemessen werden?
-    
-    oldLaserState = laserState;
-    laserState = digitalRead(laserPin);
-        
-    if (laserState == LOW && chrono.isRunning()) {    // zeit laeuft
-      
-      Serial.println(chrono.elapsed());
-      
-    } else if (laserState == HIGH && measurementTimeout.hasPassed(1500) && chrono.isRunning()) {    // zeit stoppen
-      
-      Serial.println("Lap");
-      digitalWrite(buzzerPin, HIGH);
-      
-      
-      logAndRestart();
-      
-    }
-    else if (laserState == HIGH && !chrono.isRunning()) {   // first start
-      chrono.restart();
-      measurementTimeout.restart();
-    }
-    
-  }
-
-  if (measurementIndex >= maxMeasurements) {
-    enabled = false;
-    
-    Serial.println("Gemessene Zeiten:");
-    for (int i = 0; i < maxMeasurements; i++) {
-      printTime(measuredTimes[i]);
-    }
-    measurementIndex++;
-    delay(10000);
-  }
-  
+  (*views[viewIndex]) ();
 }
 
 void mainMenu() {
 	Serial.println("RaceTimer");
-	
-	switch(menuIndex){
+
+	switch(subviewIndex){
 		case 0:
 			Serial.println("Start");
 			break;
@@ -119,12 +87,18 @@ void mainMenu() {
 		default:
 			break;
 	}
-	
+
+  if (digitalRead(nextPin)) {
+    subviewIndex++;
+  }
+  if (digitalRead(prevPin)) {
+    subviewIndex--;
+  }
+
 }
 
-void settingsMenu() {
+void settingsView() {
 
-  do {
     Serial.println("Settings");
 
     Serial.print("Number of Measurements: ");
@@ -137,25 +111,69 @@ void settingsMenu() {
     if (digitalRead(prevPin)) {
       maxMeasurements--;
     }
-    
-  } while (!digitalRead(returnPin));
 
+    if (digitalRead(returnPin)) {
+      setView(mainMenuIndex);
+    }
+}
+
+void setView(int index) {
+  viewIndex = index
 }
 
 void chronoView() {
-	Serial.println("Chrono");
+
+  if (measurementTimeout.hasPassed(600)){
+    digitalWrite(buzzerPin, LOW);
+  }
+
+  if (/*digitalRead(onPin) == HIGH &&*/ enabled) { // soll ueberhaupt gemessen werden?
+
+    oldLaserState = laserState;
+    laserState = digitalRead(laserPin);
+
+    if (laserState == LOW && chrono.isRunning()) {    // zeit laeuft
+
+       printTime(chrono.elapsed());
+
+    } else if (laserState == HIGH && measurementTimeout.hasPassed(1500) && chrono.isRunning()) {    // zeit stoppen
+
+      Serial.println("Lap");
+      digitalWrite(buzzerPin, HIGH);
+
+      logAndRestart();
+
+    }
+    else if (laserState == HIGH && !chrono.isRunning()) {   // first start
+      chrono.restart();
+      measurementTimeout.restart();
+    }
+
+  }
+
+  if (measurementIndex >= maxMeasurements) {
+      enabled = false;
+  }
+
 }
 
 void resultsView() {
 	Serial.println("Results");
+
+  for (int i = 0; i < maxMeasurements; i++) {
+    printTime(measuredTimes[i]);
+  }
+
+  measurementIndex++;
+
 }
 
-void checkMenuIndex() {
+void checkviewIndex() {
 	if (digitalRead(nextPin)) {
-		menuIndex++;
+		viewIndex++;
 	}
 	if (digitalRead(prevPin)) {
-		menuIndex--;
+		viewIndex--;
 	}
 }
 
@@ -163,7 +181,7 @@ void logAndRestart() {
     if (measurementIndex < maxMeasurements){
       measuredTimes[measurementIndex] = chrono.elapsed();
       measurementIndex++;
-  
+
       chrono.restart();
       measurementTimeout.restart();
     }
@@ -177,7 +195,7 @@ void printTime(unsigned long t_milli)
 
    mins = t_milli / (1000*60);
    millisecs = t_milli - (mins * 1000 * 60);
-   
+
    secs = millisecs / 1000;
 
    millisecs = millisecs - (secs * 1000);
