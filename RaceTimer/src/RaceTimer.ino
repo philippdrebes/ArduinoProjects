@@ -3,14 +3,14 @@
 #include <LightChrono.h>
 
 /* Pin Definitions */
-const int laserPin = 2;     // the number of the pushbutton pin
-const int buzzerPin =  3;      // the number of the LED pin
-const int onPin = 4;     // the number of the pushbutton pin
+const int laserPin = 6;
+const int buzzerPin =  13;
+const int onPin = 4;
 
-const int returnPin = 5;
-const int prevPin = 6;
-const int nextPin = 7;
-const int setPin = 8;
+const int returnPin = 10;
+const int prevPin = 9;
+const int nextPin = 8;
+const int setPin = 7;
 /* End Pin Definitions*/
 
 /* Constants */
@@ -35,7 +35,7 @@ bool enabled = true;
 
 /* Menu Definitions */
 int viewIndex = 0;
-int subviewIndex = 0;
+int subViewIndex = 0;
 
 void mainMenu();
 void settingsView();
@@ -45,9 +45,13 @@ void resultsView();
 void (*views[4]) ();
 /* End Menu Definitions */
 
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
 void setup() {
   Serial.begin(9600);   // Test
   Serial.println("Stopwatch");
+
+  lcd.begin(16, 2);
 
   // Pin Modes
   pinMode(buzzerPin, OUTPUT);
@@ -74,27 +78,51 @@ void loop() {
   (*views[viewIndex]) ();
 }
 
+void printLcd(int line, String text) {
+  lcd.setCursor(0, line);
+  lcd.print(text);
+}
+
 void mainMenu() {
 	Serial.println("RaceTimer");
+  printLcd(0, "RaceTimer");
 
-	switch(subviewIndex){
+  switch(subViewIndex){
 		case 0:
 			Serial.println("Start");
+      printLcd(1, "Start");
 			break;
 		case 1:
 			Serial.println("Settings");
+      printLcd(1, "Settings");
 			break;
 		default:
 			break;
 	}
 
   if (digitalRead(nextPin)) {
-    subviewIndex++;
+    if (subViewIndex >= 1) {
+      subViewIndex = 0;
+    }
+    else {
+      subViewIndex++;
+    }
   }
   if (digitalRead(prevPin)) {
-    subviewIndex--;
+    if (subViewIndex > 0) {
+      subViewIndex--;
+    }
   }
-
+  if (digitalRead(setPin)) {
+    switch (subViewIndex) {
+      case 0:
+        setView(chronoViewIndex);
+        break;
+      case 1:
+        setView(settingsViewIndex);
+        break;
+    }
+	}
 }
 
 void settingsView() {
@@ -118,10 +146,13 @@ void settingsView() {
 }
 
 void setView(int index) {
-  viewIndex = index
+  viewIndex = index;
 }
 
 void chronoView() {
+  if (digitalRead(returnPin)) {
+    setView(mainMenuIndex);
+  }
 
   if (measurementTimeout.hasPassed(600)){
     digitalWrite(buzzerPin, LOW);
@@ -134,7 +165,7 @@ void chronoView() {
 
     if (laserState == LOW && chrono.isRunning()) {    // zeit laeuft
 
-       printTime(chrono.elapsed());
+      printLcd(0, formatTime(chrono.elapsed()));
 
     } else if (laserState == HIGH && measurementTimeout.hasPassed(1500) && chrono.isRunning()) {    // zeit stoppen
 
@@ -154,26 +185,25 @@ void chronoView() {
   if (measurementIndex >= maxMeasurements) {
       enabled = false;
   }
-
 }
 
 void resultsView() {
 	Serial.println("Results");
 
   for (int i = 0; i < maxMeasurements; i++) {
-    printTime(measuredTimes[i]);
+    printLcd(0, formatTime(measuredTimes[i]));
   }
-
-  measurementIndex++;
-
+  if (digitalRead(prevPin)) {
+    setView(mainMenuIndex);
+	}
 }
 
-void checkviewIndex() {
+void checkViewIndex() {
 	if (digitalRead(nextPin)) {
-		viewIndex++;
+		subViewIndex++;
 	}
 	if (digitalRead(prevPin)) {
-		viewIndex--;
+		subViewIndex--;
 	}
 }
 
@@ -187,7 +217,7 @@ void logAndRestart() {
     }
  }
 
-void printTime(unsigned long t_milli)
+String formatTime(unsigned long t_milli)
 {
    char buffer[20];
    int mins, secs ;
@@ -201,6 +231,5 @@ void printTime(unsigned long t_milli)
    millisecs = millisecs - (secs * 1000);
 
    sprintf(buffer, "%02d:%02d:%03d", mins, secs, millisecs);
-   Serial.println(buffer);
-   //lcd.print(buffer);
+   return buffer;
 }
