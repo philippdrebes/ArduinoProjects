@@ -23,6 +23,9 @@ namespace StatusMonitor.App
         public MainWindow()
         {
             InitializeComponent();
+
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
+            // Title = WPFLocalizationForDummies.Properties.Resources.Title;
         }
     }
 }

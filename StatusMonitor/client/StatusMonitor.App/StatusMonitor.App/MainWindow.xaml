@@ -4,9 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StatusMonitor.App"
+        xmlns:p="clr-namespace:StatusMonitor.App.Properties"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="{x:Static p:Resources.Title}" Height="600" Width="400" MinWidth="400" MaxWidth="400">
+    <StackPanel Margin="5">
+        <TabControl>
+            <TabItem Header="{x:Static p:Resources.Tab_General}">
+
+            </TabItem>
+            <TabItem Header="{x:Static p:Resources.Tab_TeamCity}">
+                <StackPanel>
+                    <Grid>
+                        <Label Name="lblTcUsername" Content="{x:Static p:Resources.Teamcity_Username}"></Label>
+                        <TextBox Name="txtTcUsername"/>
+                    </Grid>
+                    <Grid>
+                        <Label Name="lblTcPassword" Content="{x:Static p:Resources.Teamcity_Password}"></Label>
+                        <PasswordBox Name="pwTcPassword"/>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
 </Window>
