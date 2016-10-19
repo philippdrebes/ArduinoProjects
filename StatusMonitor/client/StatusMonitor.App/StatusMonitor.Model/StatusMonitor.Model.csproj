@@ -62,7 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettings.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="AppSettingsHelper.cs" />
     <Compile Include="TeamCityWatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -88,6 +88,15 @@ namespace StatusMonitor.App.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Server ähnelt.
+        /// </summary>
+        public static string Teamcity_Server {
+            get {
+                return ResourceManager.GetString("Teamcity_Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Username ähnelt.
         /// </summary>
         public static string Teamcity_Username {

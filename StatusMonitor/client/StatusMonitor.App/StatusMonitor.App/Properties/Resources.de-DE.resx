@@ -126,6 +126,9 @@
   <data name="Teamcity_Password" xml:space="preserve">
     <value>Passwort</value>
   </data>
+  <data name="Teamcity_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
   <data name="Teamcity_Username" xml:space="preserve">
     <value>Benutzername</value>
   </data>

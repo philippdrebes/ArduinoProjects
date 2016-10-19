@@ -14,8 +14,8 @@ namespace StatusMonitor.Model
         private string _serverUsername = null;
         private string _serverPassword = null;
 
-        private TeamCityWatcher _instance = null;
-        public TeamCityWatcher Instance
+        private static TeamCityWatcher _instance = null;
+        public static TeamCityWatcher Instance
         {
             get
             {
@@ -33,11 +33,11 @@ namespace StatusMonitor.Model
             Initialize();
         }
 
-        public void Initialize()
+        private void Initialize()
         {
-            _serverPath = ConfigurationManager.AppSettings[Constants.Config.TEAMCITYSERVERPATH];
-            _serverUsername = ConfigurationManager.AppSettings[Constants.Config.TEAMCITYUSERNAME];
-            _serverPassword = ConfigurationManager.AppSettings[Constants.Config.TEAMCITYPASSWORD];
+            _serverPath = AppSettingsHelper.Instance.Settings.TeamCityServerPath;
+            _serverUsername = AppSettingsHelper.Instance.Settings.TeamCityUserName;
+            _serverPassword = AppSettingsHelper.Instance.Settings.TeamCityPassword;
 
             TeamCityClient client = new TeamCityClient(_serverPath);
 
@@ -54,5 +54,9 @@ namespace StatusMonitor.Model
 
         }
 
+        public void Start()
+        {
+
+        }
     }
 }

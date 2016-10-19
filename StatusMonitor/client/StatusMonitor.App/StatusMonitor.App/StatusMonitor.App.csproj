@@ -109,6 +109,12 @@
   <ItemGroup>
     <Folder Include="Resources\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StatusMonitor.Model\StatusMonitor.Model.csproj">
+      <Project>{2634965d-cb8c-425e-89ca-9cdb81c1dd33}</Project>
+      <Name>StatusMonitor.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
