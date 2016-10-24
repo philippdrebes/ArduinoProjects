@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TeamCitySharp;
+using TeamCitySharp.DomainEntities;
 
 namespace StatusMonitor.Model
 {
@@ -13,6 +14,11 @@ namespace StatusMonitor.Model
         private string _serverPath = null;
         private string _serverUsername = null;
         private string _serverPassword = null;
+
+        private List<Project> _projects = null;
+        public List<Project> Projects { get { return _projects; } }
+
+        private TeamCityClient _client = null;
 
         private static TeamCityWatcher _instance = null;
         public static TeamCityWatcher Instance
@@ -39,24 +45,23 @@ namespace StatusMonitor.Model
             _serverUsername = AppSettingsHelper.Instance.Settings.TeamCityUserName;
             _serverPassword = AppSettingsHelper.Instance.Settings.TeamCityPassword;
 
-            TeamCityClient client = new TeamCityClient(_serverPath);
+            _client = new TeamCityClient(_serverPath);
 
             if (!string.IsNullOrEmpty(_serverUsername) && !string.IsNullOrEmpty(_serverPassword))
             {
-                client.Connect(_serverUsername, _serverPassword);
+                _client.Connect(_serverUsername, _serverPassword);
                 _isGuest = false;
             }
             else
             {
-                client.ConnectAsGuest();
+                _client.ConnectAsGuest();
                 _isGuest = true;
             }
-
         }
 
         public void Start()
         {
-
+            _projects = _client.Projects.All();
         }
     }
 }
