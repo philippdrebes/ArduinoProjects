@@ -123,6 +123,9 @@
   <data name="Tab_TeamCity" xml:space="preserve">
     <value>TeamCity</value>
   </data>
+  <data name="TeamCity_Btn_Connect" xml:space="preserve">
+    <value>Verbinden</value>
+  </data>
   <data name="Teamcity_Password" xml:space="preserve">
     <value>Passwort</value>
   </data>

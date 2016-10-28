@@ -53,6 +53,16 @@ namespace StatusMonitor.Model
             }
         }
 
+        public void Save()
+        {
+            SerializeSettings(_filepath);
+        }
+
+        public void Load()
+        {
+            DeserializeSettings(_filepath);
+        }
+
         private void SerializeSettings(string fileName)
         {
             try

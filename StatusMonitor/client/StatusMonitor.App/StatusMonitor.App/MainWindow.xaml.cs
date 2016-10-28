@@ -43,11 +43,12 @@ namespace StatusMonitor.App
             DataContext = this;
 
             Initialize();
-            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
+            // System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
             // Title = WPFLocalizationForDummies.Properties.Resources.Title;
         }
 
-        private void Initialize() {
+        private void Initialize()
+        {
             UpdateTeamCityViewContent();
             TeamCityWatcher.Instance.Start();
         }
@@ -56,7 +57,20 @@ namespace StatusMonitor.App
         {
             TeamCityServerPath = AppSettingsHelper.Instance.Settings.TeamCityServerPath;
             TeamCityUsername = AppSettingsHelper.Instance.Settings.TeamCityUserName;
-            pwTcPassword.Password = !string.IsNullOrEmpty(AppSettingsHelper.Instance.Settings.TeamCityPassword) ? "If you can see this: Nice try!": "";
+            pwTcPassword.Password = !string.IsNullOrEmpty(AppSettingsHelper.Instance.Settings.TeamCityPassword) ? "If you can see this: Nice try!" : "";
+        }
+
+        private void BtnTeamCityConnect_OnClick(object sender, RoutedEventArgs e)
+        {
+            AppSettingsHelper.Instance.Settings.TeamCityServerPath = TeamCityServerPath;
+            AppSettingsHelper.Instance.Settings.TeamCityUserName = TeamCityUsername;
+
+            if (pwTcPassword.Password != "If you can see this: Nice try!")
+                AppSettingsHelper.Instance.Settings.TeamCityPassword = pwTcPassword.Password;
+
+            AppSettingsHelper.Instance.Save();
+
+            TeamCityWatcher.Instance.Start();
         }
     }
 }
