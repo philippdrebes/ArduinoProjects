@@ -51,6 +51,8 @@ namespace StatusMonitor.App
         {
             UpdateTeamCityViewContent();
             TeamCityWatcher.Instance.Start();
+
+            //lbTeamCityProjects.ItemsSource = TeamCityWatcher.Instance.Projects;
         }
 
         public void UpdateTeamCityViewContent()

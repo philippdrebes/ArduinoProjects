@@ -50,7 +50,8 @@ namespace StatusMonitor.Model
             _serverUsername = AppSettingsHelper.Instance.Settings.TeamCityUserName;
             _serverPassword = AppSettingsHelper.Instance.Settings.TeamCityPassword;
 
-            _client = new TeamCityClient(_serverPath);
+            if (!string.IsNullOrEmpty(_serverPath))
+                _client = new TeamCityClient(_serverPath);
         }
 
         public void Start()

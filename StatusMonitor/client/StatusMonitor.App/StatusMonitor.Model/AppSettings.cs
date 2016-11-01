@@ -11,7 +11,7 @@ namespace StatusMonitor.Model
     [Serializable]
     public class AppSettings : ISerializable
     {
-        private string _teamCityServerPath = "localhost:81";
+        private string _teamCityServerPath;
         public string TeamCityServerPath
         {
             get { return _teamCityServerPath; }

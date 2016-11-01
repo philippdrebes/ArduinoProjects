@@ -45,30 +45,49 @@
                 ASDF
             </TabItem>
             <TabItem Header="{x:Static p:Resources.Tab_TeamCity}">
-                <Grid Margin="0 20 0 0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="8*" />
-                    </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <Grid Margin="0 20 0 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="8*" />
+                        </Grid.ColumnDefinitions>
 
-                    <Label Name="lblTcServer" Content="{x:Static p:Resources.Teamcity_Server}" Grid.Column="0" Grid.Row="0" Margin="5 0 5 20"></Label>
-                    <TextBox Name="txtTcServer" Grid.Column="1" Grid.Row="0" Margin="5 0 5 20" Padding="0 3 0 0" Text="{Binding Path=TeamCityServerPath}"/>
+                        <Label Name="lblTcServer" Content="{x:Static p:Resources.Teamcity_Server}" Grid.Column="0" Grid.Row="0" Margin="5 0 5 20"></Label>
+                        <TextBox Name="txtTcServer" Grid.Column="1" Grid.Row="0" Margin="5 0 5 20" Padding="0 3 0 0" Text="{Binding Path=TeamCityServerPath}"/>
 
-                    <Label Name="lblTcUsername" Content="{x:Static p:Resources.Teamcity_Username}" Grid.Column="0" Grid.Row="1" Margin="5"></Label>
-                    <TextBox Name="txtTcUsername" Grid.Column="1" Grid.Row="1" Margin="5" Padding="0 3 0 0" Text="{Binding Path=TeamCityUsername}"/>
+                        <Label Name="lblTcUsername" Content="{x:Static p:Resources.Teamcity_Username}" Grid.Column="0" Grid.Row="1" Margin="5"></Label>
+                        <TextBox Name="txtTcUsername" Grid.Column="1" Grid.Row="1" Margin="5" Padding="0 3 0 0" Text="{Binding Path=TeamCityUsername}"/>
 
-                    <Label Name="lblTcPassword" Content="{x:Static p:Resources.Teamcity_Password}" Grid.Column="0" Grid.Row="2" Margin="5"></Label>
-                    <PasswordBox Name="pwTcPassword" Grid.Column="1" Grid.Row="2" Margin="5" Padding="0 3 0 0"/>
+                        <Label Name="lblTcPassword" Content="{x:Static p:Resources.Teamcity_Password}" Grid.Column="0" Grid.Row="2" Margin="5"></Label>
+                        <PasswordBox Name="pwTcPassword" Grid.Column="1" Grid.Row="2" Margin="5" Padding="0 3 0 0"/>
 
-                    <Button Name="btnTeamCityConnect" Content="{x:Static p:Resources.TeamCity_Btn_Connect}" Grid.Column="1" Grid.Row="3" Height="30" Margin="5"
+                        <Button Name="btnTeamCityConnect" Content="{x:Static p:Resources.TeamCity_Btn_Connect}" Grid.Column="1" Grid.Row="3" Height="30" Margin="5"
                             Click="BtnTeamCityConnect_OnClick"/>
-                </Grid>
+                    </Grid>
+                    <StackPanel>
+                        <ListBox Name="lbTeamCityProjects" HorizontalContentAlignment="Stretch" MinHeight="200">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <CheckBox Checked="{Binding Track}" />
+                                        <TextBlock Text="{Binding Name}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </StackPanel>
             </TabItem>
         </TabControl>
     </Grid>
