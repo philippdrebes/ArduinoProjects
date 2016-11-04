@@ -117,14 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Exit" xml:space="preserve">
+    <value>_Beenden</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>_Datei</value>
+  </data>
   <data name="Tab_General" xml:space="preserve">
     <value>Allgemein</value>
   </data>
   <data name="Tab_TeamCity" xml:space="preserve">
     <value>TeamCity</value>
   </data>
-  <data name="TeamCity_Btn_Connect" xml:space="preserve">
-    <value>Verbinden</value>
+  <data name="TeamCity_Btn_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
   </data>
   <data name="Teamcity_Password" xml:space="preserve">
     <value>Passwort</value>

@@ -17,9 +17,11 @@
         </Grid.ColumnDefinitions>
 
         <Menu IsMainMenu="True" Grid.Row="0" Margin="0 0 0 10">
-            <MenuItem Header="_File" />
-            <MenuItem Header="_Edit">
-                <!--<MenuItem Header="_Cut" Command="Cut">
+            <MenuItem Header="{x:Static p:Resources.File}">
+                <MenuItem Header="{x:Static p:Resources.Exit}" />
+            </MenuItem>
+            <!--<MenuItem Header="_Edit">
+                --><!--<MenuItem Header="_Cut" Command="Cut">
                     <MenuItem.Icon>
                         <Image Source="Images/cut.png" />
                     </MenuItem.Icon>
@@ -33,17 +35,17 @@
                     <MenuItem.Icon>
                         <Image Source="Images/paste.png" />
                     </MenuItem.Icon>
-                </MenuItem>-->
+                </MenuItem>--><!--
             </MenuItem>
             <MenuItem Header="_View" />
             <MenuItem Header="_Window" />
-            <MenuItem Header="_Help" />
+            <MenuItem Header="_Help" />-->
         </Menu>
 
         <TabControl Grid.Row="1" Margin="5 0 5 0">
-            <TabItem Header="{x:Static p:Resources.Tab_General}">
-                ASDF
-            </TabItem>
+            <!--<TabItem Header="{x:Static p:Resources.Tab_General}">
+                
+            </TabItem>-->
             <TabItem Header="{x:Static p:Resources.Tab_TeamCity}">
                 <StackPanel>
                     <Grid Margin="0 20 0 0">
@@ -68,7 +70,7 @@
                         <Label Name="lblTcPassword" Content="{x:Static p:Resources.Teamcity_Password}" Grid.Column="0" Grid.Row="2" Margin="5"></Label>
                         <PasswordBox Name="pwTcPassword" Grid.Column="1" Grid.Row="2" Margin="5" Padding="0 3 0 0"/>
 
-                        <Button Name="btnTeamCityConnect" Content="{x:Static p:Resources.TeamCity_Btn_Connect}" Grid.Column="1" Grid.Row="3" Height="30" Margin="5"
+                        <Button Name="btnTeamCityConnect" Content="{x:Static p:Resources.TeamCity_Btn_Refresh}" Grid.Column="1" Grid.Row="3" Height="30" Margin="5"
                             Click="BtnTeamCityConnect_OnClick"/>
                     </Grid>
                     <StackPanel>
@@ -77,11 +79,11 @@
                                 <DataTemplate>
                                     <Grid Margin="0,2">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="30" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <CheckBox Checked="{Binding Track}" />
-                                        <TextBlock Text="{Binding Name}" />
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding Watch}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Name}" />
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>

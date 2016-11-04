@@ -1,6 +1,7 @@
 ﻿using StatusMonitor.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,7 @@ namespace StatusMonitor.App
         public static readonly DependencyProperty TeamCityUsernameProperty =
             DependencyProperty.Register("TeamCityUsername", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -52,7 +54,7 @@ namespace StatusMonitor.App
             UpdateTeamCityViewContent();
             TeamCityWatcher.Instance.Start();
 
-            //lbTeamCityProjects.ItemsSource = TeamCityWatcher.Instance.Projects;
+            lbTeamCityProjects.ItemsSource = TeamCityWatcher.Instance.Projects;
         }
 
         public void UpdateTeamCityViewContent()
@@ -71,7 +73,6 @@ namespace StatusMonitor.App
                 AppSettingsHelper.Instance.Settings.TeamCityPassword = pwTcPassword.Password;
 
             AppSettingsHelper.Instance.Save();
-
             TeamCityWatcher.Instance.Start();
         }
     }
