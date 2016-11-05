@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Arduino_Code" xml:space="preserve">
+    <value>Arduino Port:</value>
+  </data>
+  <data name="CmbArduinoSerialPortDefault" xml:space="preserve">
+    <value>Bitte auswählen...</value>
+  </data>
   <data name="Exit" xml:space="preserve">
     <value>_Beenden</value>
   </data>
   <data name="File" xml:space="preserve">
     <value>_Datei</value>
+  </data>
+  <data name="Tab_Arduino" xml:space="preserve">
+    <value>Arduino</value>
   </data>
   <data name="Tab_General" xml:space="preserve">
     <value>Allgemein</value>

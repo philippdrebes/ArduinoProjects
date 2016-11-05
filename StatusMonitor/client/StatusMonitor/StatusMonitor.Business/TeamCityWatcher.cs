@@ -94,6 +94,14 @@ namespace StatusMonitor.Business
             }
         }
 
+        public void Stop()
+        {
+            if (_worker.IsAlive)
+            {
+                _worker.Abort();
+            }
+        }
+
         public List<TeamCityBuildConfig> GetBuildConfigs(string projectId)
         {
             try

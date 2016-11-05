@@ -17,9 +17,6 @@ using System.Windows.Shapes;
 
 namespace StatusMonitor.App
 {
-    /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public string TeamCityServerPath
@@ -38,6 +35,7 @@ namespace StatusMonitor.App
         public static readonly DependencyProperty TeamCityUsernameProperty =
             DependencyProperty.Register("TeamCityUsername", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
 
+        public ObservableCollection<string> AvailablePorts { get; set; }
 
         private ArduinoCommunicator _arduComm = null;
 
@@ -48,13 +46,20 @@ namespace StatusMonitor.App
 
             Initialize();
             // System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
-            // Title = WPFLocalizationForDummies.Properties.Resources.Title;
-
-            _arduComm = new ArduinoCommunicator();
+            // Title = StatusMonitor.App.Properties.Resources.Title;
         }
 
         private void Initialize()
         {
+            // Arduino connection
+            AvailablePorts = new ObservableCollection<string>();
+            AvailablePorts.Add(StatusMonitor.App.Properties.Resources.CmbArduinoSerialPortDefault);
+
+            _arduComm = new ArduinoCommunicator();
+            foreach (string port in _arduComm.AvailablePorts)
+                AvailablePorts.Add(port);
+
+            // TeamCity connection
             UpdateTeamCityViewContent();
             TeamCityWatcher.Instance.Start();
 
@@ -78,6 +83,11 @@ namespace StatusMonitor.App
 
             AppSettingsHelper.Instance.Save();
             TeamCityWatcher.Instance.Start();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            TeamCityWatcher.Instance.Stop();
         }
     }
 }

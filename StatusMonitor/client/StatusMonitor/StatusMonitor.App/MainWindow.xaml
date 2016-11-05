@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:StatusMonitor.App"
         xmlns:p="clr-namespace:StatusMonitor.App.Properties"
         mc:Ignorable="d"
-        Title="{x:Static p:Resources.Title}" Height="600" Width="400" MinWidth="400" MaxWidth="400">
+        Title="{x:Static p:Resources.Title}" Height="600" Width="400" MinWidth="400" MaxWidth="400"
+        Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30px" />
@@ -21,7 +22,8 @@
                 <MenuItem Header="{x:Static p:Resources.Exit}" />
             </MenuItem>
             <!--<MenuItem Header="_Edit">
-                --><!--<MenuItem Header="_Cut" Command="Cut">
+                -->
+            <!--<MenuItem Header="_Cut" Command="Cut">
                     <MenuItem.Icon>
                         <Image Source="Images/cut.png" />
                     </MenuItem.Icon>
@@ -35,7 +37,8 @@
                     <MenuItem.Icon>
                         <Image Source="Images/paste.png" />
                     </MenuItem.Icon>
-                </MenuItem>--><!--
+                </MenuItem>-->
+            <!--
             </MenuItem>
             <MenuItem Header="_View" />
             <MenuItem Header="_Window" />
@@ -44,11 +47,29 @@
 
         <TabControl Grid.Row="1" Margin="5 0 5 0">
             <!--<TabItem Header="{x:Static p:Resources.Tab_General}">
-                
             </TabItem>-->
+            <TabItem Header="{x:Static p:Resources.Tab_Arduino}">
+                <StackPanel>
+                    <Grid Margin="0 10 0 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="8*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Name="lblArduinoPort" Content="{x:Static p:Resources.Arduino_Code}" Grid.Column="0" Grid.Row="0" />
+                        <ComboBox SelectedIndex="0" ItemsSource="{Binding AvailablePorts}" Grid.Column="1" Grid.Row="0" />
+                    </Grid>
+                </StackPanel>
+            </TabItem>
             <TabItem Header="{x:Static p:Resources.Tab_TeamCity}">
                 <StackPanel>
-                    <Grid Margin="0 20 0 0">
+                    <Grid Margin="0 10 0 0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />

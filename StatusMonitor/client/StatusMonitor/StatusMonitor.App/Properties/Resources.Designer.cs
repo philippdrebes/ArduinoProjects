@@ -61,6 +61,24 @@ namespace StatusMonitor.App.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Arduino Port: ähnelt.
+        /// </summary>
+        public static string Arduino_Code {
+            get {
+                return ResourceManager.GetString("Arduino_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Please select... ähnelt.
+        /// </summary>
+        public static string CmbArduinoSerialPortDefault {
+            get {
+                return ResourceManager.GetString("CmbArduinoSerialPortDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die _Exit ähnelt.
         /// </summary>
         public static string Exit {
@@ -75,6 +93,15 @@ namespace StatusMonitor.App.Properties {
         public static string File {
             get {
                 return ResourceManager.GetString("File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Arduino ähnelt.
+        /// </summary>
+        public static string Tab_Arduino {
+            get {
+                return ResourceManager.GetString("Tab_Arduino", resourceCulture);
             }
         }
         

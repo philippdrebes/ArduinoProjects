@@ -2,6 +2,7 @@
 using CommandMessenger.Transport.Serial;
 using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,24 @@ namespace StatusMonitor.Business
     {
         private SerialTransport _serialTransport;
         private CmdMessenger _cmdMessenger;
+        private bool _ledState = false;
+
+        private List<string> _availablePorts = null;
+        public List<string> AvailablePorts { get { return _availablePorts; } }
 
         public ArduinoCommunicator()
         {
+            // Get a list of serial port names.
+            _availablePorts = SerialPort.GetPortNames().ToList();
+
+            Console.WriteLine("The following serial ports were found:");
+
+            // Display each port name to the console.
+            foreach (string port in _availablePorts)
+            {
+                Console.WriteLine(port);
+            }
+
             Setup();
         }
 
@@ -32,7 +48,7 @@ namespace StatusMonitor.Business
             // Note that for some boards (e.g. Sparkfun Pro Micro) DtrEnable may need to be true.
             _serialTransport = new SerialTransport
             {
-                CurrentSerialSettings = { PortName = "COM6", BaudRate = 115200, DtrEnable = false } // object initializer
+                CurrentSerialSettings = { PortName = "COM3", BaudRate = 115200, DtrEnable = false } // object initializer
             };
 
             // Initialize the command messenger with the Serial Port transport layer
@@ -53,7 +69,7 @@ namespace StatusMonitor.Business
 
         public void SetState()
         {
-            bool _ledState = false;
+            _ledState = !_ledState;
             // Create command
             var command = new SendCommand((int)Command.SetLed, _ledState);
 
