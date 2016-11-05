@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TeamCitySharp.DomainEntities;
 
-namespace StatusMonitor.Model
+namespace StatusMonitor.Business
 {
     public class TeamCityProject
     {

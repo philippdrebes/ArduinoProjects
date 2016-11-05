@@ -7,7 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StatusMonitor.Model
+namespace StatusMonitor.Business
 {
     public class AppSettingsHelper
     {

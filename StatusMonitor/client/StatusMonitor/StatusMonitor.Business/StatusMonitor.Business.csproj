@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="ArduinoCommunicator.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="AppSettingsHelper.cs" />
     <Compile Include="TeamCityBuildConfig.cs" />

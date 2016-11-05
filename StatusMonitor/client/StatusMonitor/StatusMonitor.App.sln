@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatusMonitor.App", "StatusMonitor.App\StatusMonitor.App.csproj", "{7037D626-A503-4153-BBD8-1764130805F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatusMonitor.Model", "StatusMonitor.Model\StatusMonitor.Model.csproj", "{2634965D-CB8C-425E-89CA-9CDB81C1DD33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatusMonitor.Business", "StatusMonitor.Business\StatusMonitor.Business.csproj", "{2634965D-CB8C-425E-89CA-9CDB81C1DD33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

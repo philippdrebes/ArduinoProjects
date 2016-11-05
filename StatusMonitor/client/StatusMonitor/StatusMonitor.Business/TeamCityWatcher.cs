@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using TeamCitySharp;
 using TeamCitySharp.DomainEntities;
 
-namespace StatusMonitor.Model
+namespace StatusMonitor.Business
 {
     public class TeamCityWatcher
     {
@@ -56,9 +56,9 @@ namespace StatusMonitor.Model
 
         private void Initialize()
         {
-            _serverPath = AppSettingsHelper.Instance.Settings.TeamCityServerPath;
-            _serverUsername = AppSettingsHelper.Instance.Settings.TeamCityUserName;
-            _serverPassword = AppSettingsHelper.Instance.Settings.TeamCityPassword;
+            _serverPath = AppSettingsHelper.Instance.Settings?.TeamCityServerPath;
+            _serverUsername = AppSettingsHelper.Instance.Settings?.TeamCityUserName;
+            _serverPassword = AppSettingsHelper.Instance.Settings?.TeamCityPassword;
 
             if (!string.IsNullOrEmpty(_serverPath))
                 _client = new TeamCityClient(_serverPath);

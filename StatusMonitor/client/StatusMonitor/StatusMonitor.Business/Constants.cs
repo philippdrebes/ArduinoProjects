@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StatusMonitor.Model
+namespace StatusMonitor.Business
 {
     public class Constants
     {
