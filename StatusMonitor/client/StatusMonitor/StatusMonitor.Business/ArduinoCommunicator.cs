@@ -13,7 +13,9 @@ namespace StatusMonitor.Business
     // In order to receive, attach a callback function to these events
     enum Command
     {
-        SetLed,
+        SetLedLeft,
+        SetLedMiddle,
+        SetLedRight,
         Status
     };
 
@@ -81,7 +83,7 @@ namespace StatusMonitor.Business
 
         public void SendState(bool state)
         {
-            var command = new SendCommand((int)Command.SetLed, state);  // Create command
+            var command = new SendCommand((int)Command.SetLedLeft, state);  // Create command
             _cmdMessenger.SendCommand(command); // Send command
         }
 
