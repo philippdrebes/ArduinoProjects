@@ -37,8 +37,6 @@ namespace StatusMonitor.App
 
         public ObservableCollection<string> AvailablePorts { get; set; }
 
-        private ArduinoCommunicator _arduComm = null;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -55,8 +53,7 @@ namespace StatusMonitor.App
             AvailablePorts = new ObservableCollection<string>();
             AvailablePorts.Add(StatusMonitor.App.Properties.Resources.CmbArduinoSerialPortDefault);
 
-            _arduComm = new ArduinoCommunicator();
-            foreach (string port in _arduComm.AvailablePorts)
+            foreach (string port in ArduinoCommunicator.Instance.AvailablePorts)
                 AvailablePorts.Add(port);
 
             // TeamCity connection
@@ -88,6 +85,18 @@ namespace StatusMonitor.App
         private void Window_Closed(object sender, EventArgs e)
         {
             TeamCityWatcher.Instance.Stop();
+        }
+
+        private void cmbArduinoPort_Selected(object sender, RoutedEventArgs e)
+        {
+            if (ArduinoCommunicator.Instance.IsRunning) ArduinoCommunicator.Instance.Stop();
+            if (cmbArduinoPort.SelectedItem.ToString() != Properties.Resources.CmbArduinoSerialPortDefault)
+                ArduinoCommunicator.Instance.Start(cmbArduinoPort.SelectedItem.ToString());
+        }
+
+        private void mnuExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

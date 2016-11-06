@@ -140,6 +140,11 @@ namespace StatusMonitor.Business
                     {
                         Build lastBuild = _client.Builds.LastBuildByBuildConfigId(bldConf.Id);
                         Console.WriteLine($"Project: {project.Name} BuildConfig: {bldConf.Name} Last build status: {lastBuild.Status}");
+
+                        if (lastBuild.Status == Constants.TeamCity.BuildStatus.SUCCESS)
+                            ArduinoCommunicator.Instance.SendState(true);
+                        else
+                            ArduinoCommunicator.Instance.SendState(false);
                     }
                 }
 

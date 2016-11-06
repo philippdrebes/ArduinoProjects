@@ -19,7 +19,7 @@
 
         <Menu IsMainMenu="True" Grid.Row="0" Margin="0 0 0 10">
             <MenuItem Header="{x:Static p:Resources.File}">
-                <MenuItem Header="{x:Static p:Resources.Exit}" />
+                <MenuItem Header="{x:Static p:Resources.Exit}" Name="mnuExit" Click="mnuExit_Click" />
             </MenuItem>
             <!--<MenuItem Header="_Edit">
                 -->
@@ -63,7 +63,8 @@
                             <ColumnDefinition Width="8*" />
                         </Grid.ColumnDefinitions>
                         <Label Name="lblArduinoPort" Content="{x:Static p:Resources.Arduino_Code}" Grid.Column="0" Grid.Row="0" />
-                        <ComboBox SelectedIndex="0" ItemsSource="{Binding AvailablePorts}" Grid.Column="1" Grid.Row="0" />
+                        <ComboBox Name="cmbArduinoPort" SelectedIndex="0" ItemsSource="{Binding AvailablePorts}" Grid.Column="1" Grid.Row="0"
+                                  SelectionChanged="cmbArduinoPort_Selected" />
                     </Grid>
                 </StackPanel>
             </TabItem>

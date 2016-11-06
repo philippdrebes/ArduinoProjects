@@ -14,5 +14,14 @@ namespace StatusMonitor.Business
             public const string TEAMCITYUSERNAME = "TeamCityUsername";
             public const string TEAMCITYPASSWORD = "TeamCityPassword";
         }
+
+        public class TeamCity
+        {
+            public class BuildStatus
+            {
+                public const string FAILURE = "FAILURE";
+                public const string SUCCESS = "SUCCESS";
+            }
+        }
     }
 }

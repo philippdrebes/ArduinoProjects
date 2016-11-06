@@ -21,15 +21,28 @@ namespace StatusMonitor.Business
     {
         private SerialTransport _serialTransport;
         private CmdMessenger _cmdMessenger;
-        private bool _ledState = false;
 
+        private string _connectedPort = null;
         private List<string> _availablePorts = null;
         public List<string> AvailablePorts { get { return _availablePorts; } }
 
-        public ArduinoCommunicator()
+        private bool _isRunning = false;
+        public bool IsRunning { get { return _isRunning; } }
+
+        private static ArduinoCommunicator _instance = null;
+        public static ArduinoCommunicator Instance
         {
-            // Get a list of serial port names.
-            _availablePorts = SerialPort.GetPortNames().ToList();
+            get
+            {
+                if (_instance == null)
+                    _instance = new ArduinoCommunicator();
+                return _instance;
+            }
+        }
+
+        private ArduinoCommunicator()
+        {
+            _availablePorts = SerialPort.GetPortNames().ToList();   // Get a list of serial port names.
 
             Console.WriteLine("The following serial ports were found:");
 
@@ -38,46 +51,41 @@ namespace StatusMonitor.Business
             {
                 Console.WriteLine(port);
             }
-
-            Setup();
         }
 
-        public void Setup()
+        public void Start(string port)
         {
+            _connectedPort = port;
+
             // Create Serial Port object
             // Note that for some boards (e.g. Sparkfun Pro Micro) DtrEnable may need to be true.
             _serialTransport = new SerialTransport
             {
-                CurrentSerialSettings = { PortName = "COM3", BaudRate = 115200, DtrEnable = false } // object initializer
+                CurrentSerialSettings = { PortName = _connectedPort, BaudRate = 115200, DtrEnable = false } // object initializer
             };
 
             // Initialize the command messenger with the Serial Port transport layer
             // Set if it is communicating with a 16- or 32-bit Arduino board
             _cmdMessenger = new CmdMessenger(_serialTransport, BoardType.Bit16);
 
-            // Attach the callbacks to the Command Messenger
-            AttachCommandCallBacks();
+            AttachCommandCallBacks();   // Attach the callbacks to the Command Messenger
 
-            // Start listening
-            var status = _cmdMessenger.Connect();
+            var status = _cmdMessenger.Connect();   // Start listening
             if (!status)
             {
                 Console.WriteLine("No connection could be made");
                 return;
             }
+            _isRunning = true;
         }
 
-        public void SetState()
+        public void SendState(bool state)
         {
-            _ledState = !_ledState;
-            // Create command
-            var command = new SendCommand((int)Command.SetLed, _ledState);
-
-            // Send command
-            _cmdMessenger.SendCommand(command);
+            var command = new SendCommand((int)Command.SetLed, state);  // Create command
+            _cmdMessenger.SendCommand(command); // Send command
         }
 
-        public void Exit()
+        public void Stop()
         {
             if (_cmdMessenger != null)
             {
